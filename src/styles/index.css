@@ -1,0 +1,142 @@
+/* Tailwind directives - 需由 PostCSS(tailwindcss) 处理，编辑器若提示 Unknown at rule 可忽略 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 自定义可爱风格 */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #fbc2eb;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #a6c1ee;
+    border-radius: 6px;
+}
+
+.card {
+    /* 使用 @apply 组合原子类（构建时解析） */
+    @apply bg-white/70 dark:bg-[#2b2f55]/70 backdrop-blur shadow-lg rounded-2xl p-5 border border-white/40 dark:border-white/10 hover:shadow-2xl transition relative overflow-hidden text-slate-800 dark:text-slate-100;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #ff6bcb, #6b9bff);
+    -webkit-background-clip: text;
+    background-clip: text; /* 标准属性补充 */
+    color: transparent;
+}
+
+/* 细微交互动效辅助 */
+.btn-press {@apply active:scale-95 transition-transform duration-150;}
+.hover-raise {@apply transition-transform duration-300 hover:-translate-y-1;}
+.focus-ring {@apply focus:outline-none focus:ring-2 focus:ring-primary/70 focus:ring-offset-2 focus:ring-offset-transparent;}
+
+/* 卡片光斑效果 */
+.card::before {
+    content: "";
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.45), rgba(255,255,255,0) 60%),
+        radial-gradient(circle at 80% 120%, rgba(255,107,203,0.12), rgba(255,107,203,0) 70%),
+        radial-gradient(circle at -10% 70%, rgba(107,155,255,0.15), rgba(107,155,255,0) 65%);
+    opacity: 0; transition: opacity .5s ease;
+}
+.card:hover::before { opacity: 1; }
+
+/* 夜间模式降低悬停亮度，改为柔和彩色边缘光 */
+.dark .card::before {
+    background:
+        radial-gradient(circle at 35% 25%, rgba(255,255,255,0.25), rgba(255,255,255,0) 55%),
+        radial-gradient(circle at 85% 130%, rgba(255,107,203,0.10), rgba(255,107,203,0) 70%),
+        radial-gradient(circle at -15% 75%, rgba(107,155,255,0.12), rgba(107,155,255,0) 65%);
+}
+.dark .card:hover::before { opacity: .5; }
+
+/* 增加柔和外发光取代强烈白光 */
+.dark .card:hover {
+    box-shadow: 0 4px 18px -4px rgba(255,107,203,0.25), 0 2px 10px -2px rgba(107,155,255,0.25);
+}
+
+/* 夜间模式全局优化：更高对比 & 二次元霓虹感 */
+.dark body, .dark .bg-anime-dark {
+    /* 保持已有渐变基础上再叠加微弱噪点/星光可选（此处仅颜色） */
+    color: #e6e9f5;
+}
+
+/* 星空变体附加粒子层（后续可在组件里插入一个 canvas#starfield） */
+.bg-anime-dark-galaxy::after {
+    content:""; position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen;
+    background:
+       radial-gradient(circle at 10% 20%, rgba(255,255,255,0.3) 0, rgba(255,255,255,0) 60%),
+       radial-gradient(circle at 80% 60%, rgba(255,255,255,0.25) 0, rgba(255,255,255,0) 55%),
+       repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 0 1px, transparent 1px 3px);
+    opacity:.35; animation: twinkle 6s linear infinite;
+}
+
+@keyframes twinkle { 0%,100% { opacity:.35;} 50% { opacity:.55;} }
+
+/* 纯黑 OLED 变体：提升对比，减少发光层 */
+.black-oled { background:#000 !important; }
+
+/* 夜间输入、按钮可读性 */
+.dark input, .dark select {
+    @apply bg-[#323960]/70 border border-white/10 text-slate-100 placeholder-slate-400;
+}
+
+/* 夜间渐变文字更亮一点 */
+.dark .gradient-text {
+    background: linear-gradient(90deg,#ff8ed9,#8ab4ff,#ffe66b);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* 收藏按钮在暗色下的未激活背景提升对比 */
+.dark .card button:not(.bg-primary):not(.bg-secondary):not(.bg-accent) {
+    @apply text-slate-200;
+}
+
+/* Flashcard 3D 翻转辅助类 */
+.perspective { perspective: 1200px; }
+.rotate-y-180 { transform: rotateY(180deg); }
+.backface-hidden { backface-visibility: hidden; }
+
+/* 顶栏导航按钮，避免 scale 放大导致高度溢出 */
+.top-nav-btn { @apply px-4 py-2 rounded-full text-sm font-medium bg-white/55 dark:bg-white/10 hover:bg-white/70 dark:hover:bg-white/20 transition border border-white/40 dark:border-white/15 backdrop-blur; }
+.top-nav-btn.active { @apply bg-primary text-white shadow; }
+
+/* 顶栏层次感增强 */
+.top-bar { position:relative; backdrop-filter:blur(18px) saturate(140%); -webkit-backdrop-filter:blur(18px) saturate(140%);
+    box-shadow:0 2px 4px -2px rgba(0,0,0,.15),0 4px 18px -2px rgba(0,0,0,.10);
+    transition: box-shadow .4s, background-color .4s; }
+.dark .top-bar { box-shadow:0 2px 4px -2px rgba(0,0,0,.6),0 6px 24px -8px rgba(0,0,0,.7); }
+.top-bar::before { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(120deg,rgba(255,107,203,.25),rgba(107,155,255,.25) 45%,rgba(255,230,107,.15)); opacity:.35; mix-blend-mode:overlay; animation:barPulse 6s ease-in-out infinite; }
+.dark .top-bar::before { opacity:.45; }
+/* 发光下边框 + 细分隔线 */
+.top-bar::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; pointer-events:none; background:linear-gradient(90deg,#ff6bcb,#6b9bff,#ffe66b,#6b9bff,#ff6bcb); background-size:200% 100%; animation:glowFlow 5s linear infinite; filter:drop-shadow(0 0 4px rgba(255,107,203,.55)) drop-shadow(0 0 6px rgba(107,155,255,.45)); }
+.dark .top-bar::after { filter:drop-shadow(0 0 5px rgba(255,107,203,.75)) drop-shadow(0 0 8px rgba(107,155,255,.6)); opacity:.95; }
+.top-bar.scrolled { background:rgba(255,255,255,.75); }
+.dark .top-bar.scrolled { background:rgba(34,36,56,.78); }
+.top-bar.scrolled { box-shadow:0 3px 8px -2px rgba(0,0,0,.25),0 6px 28px -6px rgba(0,0,0,.18); }
+.dark .top-bar.scrolled { box-shadow:0 4px 10px -2px rgba(0,0,0,.7),0 10px 32px -10px rgba(0,0,0,.8); }
+.top-bar.scrolled::after { height:3px; animation-duration:3.5s; }
+
+@keyframes glowFlow { 0% { background-position:0% 50%; opacity:.8;} 50% { background-position:100% 50%; opacity:1;} 100% { background-position:0% 50%; opacity:.8;} }
+@keyframes barPulse { 0%,100% { opacity:.32; } 50% { opacity:.5; } }
+
+/* --- Flashcard 3D --- */
+.flashcard-outer { position:relative; width:100%; height:16rem; perspective:1400px; }
+.flashcard-inner { position:relative; width:100%; height:100%; transform-style:preserve-3d; transition: transform .9s cubic-bezier(.68,-0.55,.27,1.55); }
+.flashcard-inner.flipped { /* rotateY handled inline to allow dynamic tilt */ }
+.flashcard-face { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center; backface-visibility:hidden; border-radius:1.25rem; padding:1.5rem; box-shadow:0 10px 30px -8px rgba(0,0,0,.25),0 4px 18px -6px rgba(0,0,0,.15); }
+.flashcard-face.front { background:linear-gradient(160deg,rgba(255,255,255,.85),rgba(255,255,255,.55)); border:1px solid rgba(255,255,255,.6); }
+.dark .flashcard-face.front { background:linear-gradient(160deg,rgba(46,52,90,.9),rgba(46,52,90,.6)); border:1px solid rgba(255,255,255,.08); }
+.flashcard-face.back { background:linear-gradient(160deg,rgba(255,255,255,.9),rgba(255,255,255,.65)); border:1px solid rgba(255,255,255,.55); transform:rotateY(180deg); }
+.dark .flashcard-face.back { background:linear-gradient(160deg,rgba(42,47,78,.95),rgba(42,47,78,.7)); border:1px solid rgba(255,255,255,.1); }
+.flashcard-outer::before { content:""; position:absolute; inset:-4px; border-radius:1.4rem; background:radial-gradient(circle at 30% 20%,rgba(255,107,203,.25),rgba(107,155,255,.15) 60%,transparent 70%); filter:blur(18px); opacity:.45; pointer-events:none; transition:opacity .6s; }
+.flashcard-outer:hover::before { opacity:.8; }
+.flashcard-face button { backdrop-filter:blur(4px); }
+.custom-scrollbar::-webkit-scrollbar { width:6px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background:linear-gradient(#ff6bcb,#6b9bff); border-radius:3px; }
+.custom-scrollbar::-webkit-scrollbar-track { background:transparent; }
