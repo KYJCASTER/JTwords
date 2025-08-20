@@ -1,0 +1,15 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.jtwords.app
+productName: 惊天背单词
+files:
+  - filter:
+      - dist/**/*
+      - electron/**/*
+      - package.json
+asar: true
+win:
+  target: nsis
+  icon: build/icon.ico
+electronVersion: 32.3.3

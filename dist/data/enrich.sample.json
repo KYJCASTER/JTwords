@@ -1,0 +1,22 @@
+[
+    {
+        "word": "abandon",
+        "freq": 45.2,
+        "example": "He had to abandon the sinking ship.",
+        "phrases": [
+            "abandon hope",
+            "abandon oneself to"
+        ],
+        "note": "Example & collocations derived from public domain / common usage."
+    },
+    {
+        "word": "accelerate",
+        "freq": 32.6,
+        "example": "Innovations can accelerate change across industries.",
+        "phrases": [
+            "accelerate growth",
+            "accelerate development"
+        ],
+        "note": "Frequency is illustrative (non-authoritative)."
+    }
+]
