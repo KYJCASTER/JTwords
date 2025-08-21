@@ -3,7 +3,7 @@ import { Cet6Word } from '../services/cet6';
 import { ProgressMap, getLevelDisplay } from '../services/progress';
 import { useFavorites } from '../services/favorites';
 import { upsertOverride, exportOverrides, clearOverrides } from '../services/enrich';
-// 已移除自动例句/短语生成，不再导入 synthetic 生成函数
+// 虽已移除旧 synthetic 函数，但仍通过 generateIfMissing 自动补全缺失内容
 import { generateWithGemini, getGeminiKey, setGeminiKey, testGeminiKey, setGeminiModel, getGeminiModel } from '../services/ai';
 import { generateIfMissing } from '../services/aiGlobal';
 
